@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour {
 
     public float timer;
     [HideInInspector]
-    public float bestTime = 0;
+    public float bestTime;
 
     //PRIVATE INSTANCE VARIABLES
     private AudioSource[] _audioSources;
