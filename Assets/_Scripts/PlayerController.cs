@@ -5,6 +5,7 @@ using System;
 
 public class PlayerController : MonoBehaviour {
 
+    //PUBLIC INSTANCE VARIABLE
     public int count;
 
     public Text aquiredLabel;
@@ -12,29 +13,67 @@ public class PlayerController : MonoBehaviour {
     public Text titleLabel;
     public Text instructLabel;
 
-    public float deathTime;
-    private float titleTime = 5;
-    private float[] ticking = {5,6,7,8,9};
+    public float timer;
+    [HideInInspector]
+    public float bestTime = 0;
+
+    //PRIVATE INSTANCE VARIABLES
+    private AudioSource[] _audioSources;
+    private AudioSource _tick;
+    private AudioSource _music;
+    private AudioSource _pickup;
+    //Stop all sounds
+    private AudioSource[] allAudioSources;
+    void StopAllAudio()
+    {
+        allAudioSources = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
+        foreach (AudioSource audioS in allAudioSources)
+        {
+            audioS.Stop();
+        }
+    }
 
 	// Use this for initialization
 	void Start () {
-        SetCount();
+        this.SetCount();
+
+        this._audioSources = gameObject.GetComponents<AudioSource>();
+        this._tick = this._audioSources[3];
+        this._pickup = this._audioSources[1];
+        this._music = this._audioSources[2];
+
+        InvokeRepeating("PlayTicking", 114.5f, 1f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if(Time.time >= titleTime)
+        timer -= Time.deltaTime;
+
+        if(timer <= 115f)
         {
             this.titleLabel.enabled = false;
             this.instructLabel.enabled = false;
         }
-        Timer();
+        this.Timer();
+
+        if(count >= 15)
+        {
+            //Time.timeScale = 0f;
+            bestTime = timer;
+            Application.LoadLevel("Win");
+        }
 	}
+
+    void PlayTicking()
+    {
+        this._tick.Play();
+    }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Pickup")) // If the other GameObject that collided with the player - is Enemy -
         {
+            this._pickup.Play();
             count++;
             SetCount();
             Debug.Log("Adam Sandler Acquired");
@@ -48,26 +87,13 @@ public class PlayerController : MonoBehaviour {
     }
     public void Timer () // method to update to the current score upon killing enemies or picking up Gold and Silver coins
     {
-        this.timerLabel.text = String.Format("{0:0}", Time.time); // label equals this string statement - score is concatenated to string for display
+        this.timerLabel.text = String.Format("{0:0}", timer); // label equals this string statement - score is concatenated to string for display
 
-        if (Time.time >= ticking[0])
+        if (timer <= 5f)
         {
             this.timerLabel.color = Color.red;
-            if (Time.time >= ticking[1])
-            {
-            }
-            if (Time.time >= ticking[2])
-            {
-            }
-            if (Time.time >= ticking[3])
-            {
-            }
-            if (Time.time >= ticking[4])
-            {
-            }
         }
-
-        if (Time.time >= deathTime)
+        if (timer <= 0)
         {
             Application.LoadLevel("Game Over");
         }

@@ -109,9 +109,12 @@
     <Compile Include="Assets\Imported Assets\Utility\WaypointCircuit.cs" />
     <Compile Include="Assets\Imported Assets\Utility\WaypointProgressTracker.cs" />
     <Compile Include="Assets\_Scripts\EnemyController.cs" />
-    <Compile Include="Assets\_Scripts\GoalController.cs" />
+    <Compile Include="Assets\_Scripts\GameOverController.cs" />
     <Compile Include="Assets\_Scripts\PickupController.cs" />
     <Compile Include="Assets\_Scripts\PlayerController.cs" />
+    <Compile Include="Assets\_Scripts\ScoreController.cs" />
+    <Compile Include="Assets\_Scripts\TimeController.cs" />
+    <Compile Include="Assets\_Scripts\WinController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Imported Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
